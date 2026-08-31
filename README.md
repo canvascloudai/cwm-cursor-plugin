@@ -23,7 +23,7 @@ Anonymous demo works with **zero config**. A World Model key unlocks the full to
 | --- | --- |
 | `mcp.json` | Hosted Streamable HTTP MCP — no stdio, no `npx`, no localhost |
 | `skills/simulate-architecture` | Operational guidance for design / cost / chaos / comparison workflows |
-| `.cursor-plugin/plugin.json` | Marketplace manifest (`cloud-world-model` v1.0.0) |
+| `.cursor-plugin/plugin.json` | Marketplace manifest (`cloud-world-model` v1.1.0) |
 
 Hosted MCP URL (verified live, no API key required to initialize):
 
@@ -31,9 +31,27 @@ Hosted MCP URL (verified live, no API key required to initialize):
 https://www.cloudworldmodel.ai/mcp
 ```
 
-Server info at packaging time: `name=cloud-world-model`, `version=1.1.0`. Anonymous demo is capped but functional (marketing: 6 tools / 50 calls / 20 sim steps). Full access uses a World Model key.
+As of 2026-08-31 the hosted anonymous MCP exposes **9 tools** (no API key). Caps: max 2 active simulations, 10 resources, 20 persisted steps, ~30 min TTL, 10000 RPS traffic cap. A World Model key unlocks the full tool set and persistent owned simulations.
 
 This plugin does **not** package the local stdio server (`npx cwm-mcp`). That package defaults to `localhost:5000` and is the wrong transport for Grok Bot and other people's machines.
+
+## Anonymous 9-tool loop
+
+`scenario.list` returns **compact catalog cards only** (~40 scenarios, ~37KB): `id`, `title`, `name`, `description` (capped at 500 chars), `difficulty`, `tags`, `category`, `duration`, `provider` / `providers` / `providerSummary`, `resourceCount`, `connectionCount`. It does **not** include `resources`, `connections`, or traffic/failure graphs.
+
+Documented agent workflow:
+
+1. `scenario.list` — pick a card. Prefer `resourceCount` ≤ 10 for anonymous create.
+2. `scenario.get` with required argument **`scenarioId`** (not `id`) — hydrate one full graph (`resources`, `connections`, `defaultTrafficPatterns`, etc.).
+3. `simulation.create` with those hydrated `resources` / `connections`. Trim extra keys if create rejects `additionalProperties`: resource items allow `id`, `type`, `name`, `provider`, `characteristics`, `recoveryPolicy`. Connection items allow `sourceId`, `targetId`, `label`.
+4. Pass **`simulationId` from create on every later call.** Cursor and Grok Bot open a fresh MCP session per tool call and do not persist `Mcp-Session-Id`. Omitting `simulationId` returns `NO_ACTIVE_SIMULATION`. The create id is a short-lived unguessable capability (~30 min) that survives that teardown.
+5. `simulation.inject_traffic` / `simulation.inject_failure` → `simulation.step` → `simulation.metrics`.
+6. `simulation.recover_resource` to close a reversible failure story (cannot restore `instance_kill`).
+7. `simulation.delete` to free a demo slot (`{ deleted: true, id }`).
+
+Three live catalog scenarios currently exceed the 10-resource create cap. `scenario.get` will hydrate them; anonymous create will bounce: `aws-multi-region-failover` (11), `zombie-infra-aws` (13), `github-inspired-cascading-retry-storm` (14). Pick `resourceCount` ≤ 10, trim, or use an API key.
+
+CWM is a simulator, not a real cloud account. Do not invent customers, revenue, live bills, or features that are not live. Prefer MCP tools over guessed costs. Report coverage as **modeled vs estimated vs known-gap**. Only trust accuracy validators when `checked` is `true`.
 
 ## Install from Cursor Marketplace (once listed)
 
