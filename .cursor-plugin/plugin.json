@@ -1,0 +1,33 @@
+{
+  "name": "cloud-world-model",
+  "description": "Simulate AWS, GCP, Azure, OCI, and DigitalOcean architectures for cost, performance, and resilience without provisioning real cloud.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Canvas Cloud AI",
+    "email": "kevin@canvascloud.ai"
+  },
+  "homepage": "https://www.cloudworldmodel.ai",
+  "repository": "https://github.com/canvascloudai/cwm-cursor-plugin",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "cloud",
+    "simulation",
+    "aws",
+    "gcp",
+    "azure",
+    "cost",
+    "chaos"
+  ],
+  "logo": "assets/logo.svg",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "CWM_API_KEY": {
+        "type": "string",
+        "title": "Cloud World Model API key",
+        "description": "Optional. Anonymous demo works without a key (capped tools and steps). A World Model key from https://www.cloudworldmodel.ai/getting-started unlocks the full tool set and persistent owned simulations. Leave empty for first-time installs."
+      }
+    }
+  }
+}

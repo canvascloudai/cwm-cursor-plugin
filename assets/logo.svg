@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Cloud World Model">
+  <title>Cloud World Model</title>
+  <defs>
+    <linearGradient id="cwm-bg" x1="16" y1="8" x2="112" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#16324F"/>
+      <stop offset="1" stop-color="#0B1A2B"/>
+    </linearGradient>
+    <linearGradient id="cwm-ring" x1="24" y1="28" x2="104" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7EE7F2"/>
+      <stop offset="1" stop-color="#3DDC97"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#cwm-bg)"/>
+  <g fill="none" stroke="url(#cwm-ring)" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="64" cy="64" r="34" stroke-width="3.5"/>
+    <ellipse cx="64" cy="64" rx="16" ry="34" stroke-width="2.25"/>
+    <ellipse cx="64" cy="64" rx="34" ry="12" stroke-width="2.25"/>
+    <path d="M30 64h68" stroke-width="2.25"/>
+  </g>
+  <circle cx="64" cy="64" r="7" fill="#F4FBFF"/>
+  <circle cx="64" cy="64" r="3.25" fill="#0B1A2B"/>
+</svg>
